@@ -1,0 +1,51 @@
+# docker-compose.yml
+version: "3.4"
+
+services:
+  postgres-app:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+
+  electro-service:
+    restart: always
+    build: ./at.electro.shop.service
+    image: electro-service
+    env_file: ./at.electro.shop.service/.env
+    depends_on:
+      - postgres-app
+    ports:
+      - ${ELECTRO_SERVICES_PORT}:${ELECTRO_SERVICES_PORT}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-app:${POSTGRES_PORT}/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+
+  electro-bff:
+    restart: always
+    build: ./at.electro.shop.bff
+    image: electro-bff
+    hostname: electro-bff
+    env_file: ./at.electro.shop.bff/.env
+    ports:
+      - ${ELECTRO_BFF_PORT}:${ELECTRO_BFF_PORT}
+    depends_on:
+      - electro-service
+    links:
+      - electro-service
+
+  elextro_ui:
+    restart: always
+    build: ./electro-shop-ui
+    image: electro-shop-ui
+    env_file: ./electro-shop-ui/.env
+    depends_on:
+      - electro-bff
+    ports:
+      - ${ELECTRO_UI_PORT}:${ELECTRO_UI_PORT}
+    environment:
+      - CHOKIDAR_USEPOLLING=true

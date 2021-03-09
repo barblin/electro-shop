@@ -1,0 +1,2 @@
+The Compose file './docker-compose.yml' is invalid because:
+services.electro-bff.environment contains an invalid type, it should be an object, or an array

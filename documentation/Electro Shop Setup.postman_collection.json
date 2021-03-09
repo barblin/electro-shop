@@ -1,0 +1,104 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Camunda Alanda Setup",
+		"_postman_id": "208e1ef4-b219-9ccf-1b2b-6c2d0dbb5e95",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Upload BPMN",
+			"request": {
+				"url": "http://0.0.0.0:8080/api/uploads/processes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"path\": \"./ressources\",\r\n    \"name\": \"payment.bpmn\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Start Process",
+			"request": {
+				"url": "http://localhost:4000/engine-rest/process-definition/key/Process_0h50lyc/start",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"variables\": {\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Upload BPMN Camunda",
+			"request": {
+				"url": "http://localhost:4000/engine-rest/deployment/create",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "process.bpmn",
+							"type": "file",
+							"src": "/D:/Work/Alanda/camunda-alanda-setup/ressources/payment.bpmn",
+							"value": ""
+						},
+						{
+							"key": "deployment-name",
+							"value": "Alanda Deployment",
+							"type": "text"
+						},
+						{
+							"key": "enable-duplicate-filtering",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "deploy-changed-only",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "tenantId",
+							"value": "barblin",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get process executions",
+			"request": {
+				"url": "http://localhost:4000/api/processes/executions",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
