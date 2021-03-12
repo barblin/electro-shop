@@ -36,7 +36,7 @@ manifest.yml
 out
 overridedb.*
 target
-transactions-logs
+transaction-logs
 .flattened-pom.xml
 secrets.yml
 .gradletasknamecache
