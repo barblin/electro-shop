@@ -1,4 +1,4 @@
-package at.electro.shop.services;
+package at.electro.shop.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
